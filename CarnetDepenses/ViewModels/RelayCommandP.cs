@@ -1,11 +1,27 @@
-﻿namespace CarnetDepenses.ViewModels;
+﻿using System.Windows.Input;
 
-public class RelayCommandP : System.Windows.Input.ICommand
+namespace CarnetDepenses.ViewModels;
+
+// Variante de RelayCommand qui reçoit un paramètre (ex: la dépense à supprimer)
+public partial class RelayCommandP : ICommand
 {
-    private readonly Action<object> _exec;
-    public RelayCommandP (Action<object> exec) => _exec = exec;
-    public bool CanExecute(object p) => true;
-    public void Execute(object p) => _exec(p);
-    public event EventHandler CanExecuteChanged;
+    private readonly Action<object?> _executer;
+    private readonly Func<bool>? _peutExecuter;
 
+    public RelayCommandP(Action<object?> executer,
+                         Func<bool>? peutExecuter = null)
+    {
+        _executer = executer;
+        _peutExecuter = peutExecuter;
+    }
+
+    public bool CanExecute(object? p)
+        => _peutExecuter?.Invoke() ?? true;
+
+    public void Execute(object? p) => _executer(p);
+
+    public event EventHandler? CanExecuteChanged;
+
+    public void Rafraichir()
+        => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 }

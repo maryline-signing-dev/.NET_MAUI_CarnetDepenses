@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 
-namespace CarnatDepenses.ViewModels;
+namespace CarnetDepenses.ViewModels;
 
 //Classe mere de tous les ViewModels
 public class BaseViewModel : INotifyPropertyChanged

@@ -1,24 +1,21 @@
-﻿namespace CarnetDepenses
+﻿using CarnetDepenses.ViewModels;
+
+namespace CarnetDepenses
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        private readonly DepensesViewModel _vm;
 
-        public MainPage()
+        public MainPage(DepensesViewModel vm) // injecté
         {
             InitializeComponent();
+            BindingContext = _vm = vm;
         }
 
-        private void OnCounterClicked(object? sender, EventArgs e)
+        protected override async void OnAppearing()
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            base.OnAppearing();
+            await _vm.ChargerAsync();  // recharge
         }
     }
 }
